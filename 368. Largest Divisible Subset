@@ -1,0 +1,51 @@
+class Solution {
+private:
+
+    vector<int> helper(int i,vector<int>& nums,unordered_map<int,vector<int>>& mp)
+    {
+        vector<int> res;
+
+        if(mp.find(i)!=mp.end())
+        {
+            return mp[i];
+        }
+
+        for(int k=0;k<i;k++)
+        {
+            vector<int> tmp;
+            if(nums[i]%nums[k]==0)
+            {
+                tmp = helper(k,nums,mp);
+            }
+            if(tmp.size()>res.size())
+            {
+                res = tmp;
+            }
+        }
+
+        res.push_back(nums[i]);
+        mp[i] = res;
+        return res;
+    }
+
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n  = nums.size();
+        sort(nums.begin(),nums.end());
+        vector<int> res;
+        int mxLen = 0;    
+        unordered_map<int,vector<int>> mp;
+        for(int i=0;i<n;i++)
+        {
+            vector<int> tmp;
+            tmp = helper(i,nums,mp);
+            if(res.size()<tmp.size())
+            {
+                res= tmp;
+            }
+        }
+
+        return res;    
+
+    }
+};
