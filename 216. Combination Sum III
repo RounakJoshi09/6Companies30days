@@ -1,0 +1,39 @@
+class Solution {
+private:
+
+void allCombinationsHapler(int n,int k,vector<vector<int>>& res,vector<int> combination,int start)
+{
+    if(n==0 && k==0)
+    {
+        res.push_back(combination);
+        return;
+    }
+    if(k==0 || n<0)
+    {
+        return;
+    }
+
+    for(int st = start;st<=9;st++)
+    {
+        combination.push_back(st);
+        allCombinationsHapler(n-st, k-1, res, combination, st+1);
+        combination.pop_back();
+    }
+}
+
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+
+        vector<vector<int>> res;
+
+        int start = 1;
+        vector<int> combination;
+
+        allCombinationsHapler(n, k, res, combination, start);
+
+        return res;
+
+
+        
+    }
+};
