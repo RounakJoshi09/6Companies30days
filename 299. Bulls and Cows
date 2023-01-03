@@ -4,38 +4,30 @@ public:
         int s = secret.length();
         int g = guess.length();
         int bulls = 0;
+        int cows = 0 ;
+        unordered_map<char,int> hm;
         for(int i=0;i<s;i++)
         {
-            if(secret[i] == guess[i])
+            if(secret[i]==guess[i])
             {
                 bulls++;
-                secret[i] = 'X';
-                guess[i] = 'X';
             }
-        }
-        unordered_map<char,int> secMap;
-        unordered_map<char,int> gueMap;
-        for(int i=0;i<s;i++)
-        {
-            if(secret[i]!='X')
-            {secMap[secret[i]]++;}
-            
-            if(guess[i]!='X')
-            {
-                gueMap[guess[i]]++;
-            }
-        }
-        int cow = 0;
-        for(auto x:secMap)
-        {
-            if(gueMap.find(x.first)!=gueMap.end())
-            {
-                    cow+= min(x.second,gueMap[x.first]);
-            }
-        }
+            else{
+                if(hm[secret[i]]<0)
+                {
+                    cows++;
+                }
+                if(hm[guess[i]]>0)
+                {
+                    cows++;
+                }
+                hm[secret[i]]++;
+                hm[guess[i]]--;
 
-        return to_string(bulls)+"A"+to_string(cow)+"B";
-
+            }
+        }
         
+        return to_string(bulls) + "A" + to_string(cows) + "B";
+
     }
 };
