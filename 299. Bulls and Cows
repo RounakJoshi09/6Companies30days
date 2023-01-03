@@ -1,0 +1,41 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int s = secret.length();
+        int g = guess.length();
+        int bulls = 0;
+        for(int i=0;i<s;i++)
+        {
+            if(secret[i] == guess[i])
+            {
+                bulls++;
+                secret[i] = 'X';
+                guess[i] = 'X';
+            }
+        }
+        unordered_map<char,int> secMap;
+        unordered_map<char,int> gueMap;
+        for(int i=0;i<s;i++)
+        {
+            if(secret[i]!='X')
+            {secMap[secret[i]]++;}
+            
+            if(guess[i]!='X')
+            {
+                gueMap[guess[i]]++;
+            }
+        }
+        int cow = 0;
+        for(auto x:secMap)
+        {
+            if(gueMap.find(x.first)!=gueMap.end())
+            {
+                    cow+= min(x.second,gueMap[x.first]);
+            }
+        }
+
+        return to_string(bulls)+"A"+to_string(cow)+"B";
+
+        
+    }
+};
