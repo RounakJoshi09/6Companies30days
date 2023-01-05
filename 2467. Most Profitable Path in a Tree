@@ -1,0 +1,78 @@
+class Solution {
+    vector<int>graph[100005];
+    int levelFromBob[100005];
+    bool visited[100005];
+    
+    int parentNodeOfBob[100005];
+    
+    long long maxAmount=-1e9;
+    vector<int>Amount;
+public:
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        Amount = amount;
+        for(auto v: edges){
+            graph[v[0]].push_back(v[1]);
+            graph[v[1]].push_back(v[0]);
+        }
+        
+        for(int i=0; i<edges.size()+1; i++) levelFromBob[i]=1e9;
+        memset(visited, false , sizeof(visited));
+        levelFromBob[bob]=0;
+        dfs_bob(bob, -1);
+        
+       
+        map<int, bool>mpp;
+        int node=0;
+        while(parentNodeOfBob[node]!=-1){
+            mpp[node]=true;
+            node =parentNodeOfBob[node];
+        }
+        mpp[bob]=true;
+        
+        for(int i=0; i<edges.size()+1; i++)
+        {
+            if(!mpp[i]){
+
+                levelFromBob[i]=1e9;
+            }
+        }
+        
+       
+        
+        memset(visited, false, sizeof(visited)); 
+        int level=0;
+        long long sum_amount=0;
+        dfs_alice(0, level, sum_amount);
+        
+        return (int)maxAmount;
+    }
+    
+    void dfs_bob(int u, int p)
+    {
+        visited[u]=true;
+        parentNodeOfBob[u]=p;  
+        for(auto v: graph[u]){
+            if(!visited[v]){
+                levelFromBob[v]=levelFromBob[u]+1; 
+                dfs_bob(v, u);
+            }
+        }
+    }
+    
+    void dfs_alice(int u, int level, long long sum_amount)
+    {
+        visited[u]=true;
+        if(level<levelFromBob[u]) sum_amount+=Amount[u]; 
+        else if(level==levelFromBob[u]) sum_amount+=(Amount[u]/2);
+
+        if( u!=0 && graph[u].size()==1){
+            maxAmount=max(maxAmount, sum_amount);
+            }
+        for(auto v: graph[u]){
+            if(!visited[v]){
+                dfs_alice(v, level+1, sum_amount);
+            }
+        }
+    }
+    
+};
