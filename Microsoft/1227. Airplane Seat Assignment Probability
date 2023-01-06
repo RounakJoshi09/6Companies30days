@@ -8,7 +8,7 @@ public:
         }
         else
         {
-            return 
+            return 0.5000;
         }
     }
 };

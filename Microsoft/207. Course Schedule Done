@@ -1,0 +1,47 @@
+class Solution {
+private:
+bool isCycle(int course,unordered_map<int,vector<int>>& mp,vector<int>& visited)
+{
+    if(mp.find(course)==mp.end())
+    {
+        return false;
+    }
+    if(visited[course]==1)
+    {
+        return true;
+    }
+
+    if(visited[course]==0){
+    visited[course] = 1;
+
+    for(auto x:mp[course])
+    {
+        if(isCycle(x, mp, visited)==true)
+        {
+            return true;
+        }
+    }
+    }
+    visited[course] = 2;
+    return false;
+}
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+
+        int n  = prerequisites.size();
+        unordered_map<int,vector<int>> mp;
+        for(auto x:prerequisites)
+        {
+            mp[x[1]].push_back(x[0]);
+        }
+        vector<int> visited(numCourses,0);      
+        for(int course = 0 ;course<numCourses;course++)
+        {
+            if(isCycle(course,mp,visited)==true)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
