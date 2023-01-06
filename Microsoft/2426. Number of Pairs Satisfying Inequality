@@ -1,0 +1,55 @@
+class Solution 
+{
+public:
+
+    long long int res;
+   
+    void helper(vector<int>& nums, int left, int mid, int right,int d)
+    {
+
+        
+        int l = left, r = mid + 1;
+        while(l <= mid && r <= right)
+        {
+            if(nums[l]<=(nums[r]+d))  
+            {
+                res += (right - r+1);
+                l++;
+            }
+            else      
+            {
+                r++;
+            }
+        }
+       
+        sort(nums.begin() + left, nums.begin() + right + 1);
+        return;
+         
+    }
+    void mergeSort(vector<int>& nums, int left, int right,int d)
+    {
+        if(left == right) 
+            return;
+        
+        int mid = (left + right)/2;
+        mergeSort(nums,left, mid,d);
+        mergeSort(nums,mid+1,right,d);
+        
+        helper(nums,left,mid,right,d);
+        return;
+        
+    }
+    long long numberOfPairs(vector<int>& a, vector<int>& b, int d) 
+    {
+        res = 0;
+        int n = a.size();
+        vector<int>tmp(n);  
+        
+        for(int i=0;i<n;i++)
+        tmp[i]=a[i]-b[i];               
+			
+        mergeSort(tmp,0,n-1,d);
+		
+        return res;
+    }
+};
