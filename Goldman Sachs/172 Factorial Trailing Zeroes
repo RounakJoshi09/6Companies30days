@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int five = 0;
+        int powerOfFive = 5 ;
+
+        while(powerOfFive<=n)
+        {
+            five+=n/powerOfFive;
+            powerOfFive = powerOfFive * 5 ;
+        }        
+        return five;        
+    }
+};
