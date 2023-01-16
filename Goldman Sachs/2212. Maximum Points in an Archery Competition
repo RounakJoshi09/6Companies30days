@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void maxPoints(int j,int numArrows,vector<int>& aliceArrows,vector<int>& bob,vector<int>& bobFinal,int currentSum,int& finalSum)
+    {
+        if(j==0)
+        {
+            if(currentSum>finalSum)
+            {
+                finalSum = currentSum;
+                bob[j] = numArrows;
+                bobFinal = bob;
+                
+            }
+            return;
+        }
+        maxPoints(j-1, numArrows, aliceArrows,bob,bobFinal,currentSum,finalSum);
+
+        if(numArrows>aliceArrows[j])
+        {
+            bob[j] = aliceArrows[j]+1;
+            maxPoints(j-1, numArrows-bob[j], aliceArrows, bob, bobFinal,  currentSum + j, finalSum);
+            bob[j] = 0;
+        }
+
+    }
+    vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
+        int n  = aliceArrows.size();
+        vector<int> bob(n,0);
+        vector<int> bobFinal(n,0);
+        int finalSum = 0;
+        maxPoints(n-1, numArrows, aliceArrows,bob,bobFinal,0,finalSum);
+        return bobFinal;
+        
+    }
+};
